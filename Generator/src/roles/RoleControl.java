@@ -89,14 +89,17 @@ public abstract class RoleControl {
      * @return The target number
      */
     public int validTownTarget(int player) {
-        int target = 0;
-        Scanner in = new Scanner(System.in);
         ArrayList<Integer> options = new ArrayList<>();
         for (int i = 1; i < players.size()+1; i++) {
             if (player != i){
                 options.add(i);
             }
         }
+        return PlayerChoice(options);
+    }
+    private static int PlayerChoice(ArrayList<Integer>options){
+        Scanner in = new Scanner(System.in);
+        int target = 0;
         while (target == 0) {
             System.out.println("Your options are "+options);
             System.out.println("enter one of the shown numbers");
@@ -114,8 +117,7 @@ public abstract class RoleControl {
             }
 
         }
-
-        return(target);
+        return target;
     }
 
     /**
@@ -133,25 +135,7 @@ public abstract class RoleControl {
                 options.add(i);
             }
         }
-        while (target == 0) {
-            System.out.println("Your options are "+options);
-            System.out.println("enter one of the shown numbers");
-            if (in.hasNextInt()) {
-                int input = in.nextInt();
-                in.nextLine();
-                for (Integer option : options) {
-                    if (input == option) {
-                        target = input;
-                        break;
-                    }
-                }
-            }else if (in.hasNext()) {
-                in.nextLine();
-            }
-
-        }
-
-        return(target);
+        return PlayerChoice(options);
     }
 
     /**
@@ -169,24 +153,7 @@ public abstract class RoleControl {
                 options.add(i);
             }
         }
-        while (target == 0) {
-            System.out.println("Your options are "+options);
-            System.out.println("enter one of the shown numbers");
-            if (in.hasNextInt()&&in.hasNext()) {
-                int input = in.nextInt();
-                in.nextLine();
-                for (Integer option : options) {
-                    if (input == option) {
-                        target = input;
-                        break;
-                    }
-                }
-            }else if (in.hasNext()){
-                in.nextLine();
-            }
-        }
-
-        return(target);
+        return PlayerChoice(options);
     }
 
     /**
@@ -214,23 +181,7 @@ public abstract class RoleControl {
 
             return mafTarget;
         }
-        while (target == 0) {
-            System.out.println("Your options are "+options);
-            System.out.println("enter one of the shown numbers");
-            if (in.hasNextInt()&&in.hasNext()) {
-                int input = in.nextInt();
-                for (Integer option : options) {
-                    if (input == option) {
-                        target = input;
-                        break;
-                    }
-                }
-            }else if (in.hasNext()){
-                in.nextLine();
-            }
-        }
-
-        return target;
+        return PlayerChoice(options);
     }
 
     /**
