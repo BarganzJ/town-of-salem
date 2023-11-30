@@ -5,6 +5,7 @@ import actions.RoleInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 public abstract class RoleControl {
 
@@ -79,21 +80,42 @@ public abstract class RoleControl {
     }
 
     /**
-     * Returns a valid target for a town member. A valid target is everyone in the town
-     * excluding the number of the player, as they cannot target themselves unless the
-     * role allows it. In those cases, the number -1 is passed in.
+     * Returns a valid target for a town member that was chosen by the player from all valid targets.
+     * A valid target is everyone in the town excluding the number of the player,
+     * as they cannot target themselves unless the role allows it.
+     * In those cases, the number -1 is passed in.
      *
      * @param player The player number
      * @return The target number
      */
     public int validTownTarget(int player) {
-
-        int target = randomizer.nextInt(players.size()) + 1;
-        while (player == target) {
-            target = randomizer.nextInt(players.size()) + 1;
+        int target = 0;
+        Scanner in = new Scanner(System.in);
+        ArrayList<Integer> options = new ArrayList<>();
+        for (int i = 1; i < players.size()+1; i++) {
+            if (player != i){
+                options.add(i);
+            }
         }
-        return(target);
+        while (target == 0) {
+            System.out.println("Your options are "+options);
+            System.out.println("enter one of the shown numbers");
+            if (in.hasNextInt()) {
+                int input = in.nextInt();
+                in.nextLine();
+                for (Integer option : options) {
+                    if (input == option) {
+                        target = input;
+                        break;
+                    }
+                }
+            } else if (in.hasNext()){
+                in.nextLine();
+            }
 
+        }
+
+        return(target);
     }
 
     /**
@@ -103,13 +125,33 @@ public abstract class RoleControl {
      * @return The target number
      */
     public int validMafTarget() {
-
-        int target = randomizer.nextInt(players.size()) + 1;
-        while (mafia.contains(target)) {
-            target = randomizer.nextInt(players.size()) + 1;
+        int target = 0;
+        Scanner in = new Scanner(System.in);
+        ArrayList<Integer> options = new ArrayList<>();
+        for (int i = 1; i < players.size()+1; i++) {
+            if (!mafia.contains(i)){
+                options.add(i);
+            }
         }
-        return(target);
+        while (target == 0) {
+            System.out.println("Your options are "+options);
+            System.out.println("enter one of the shown numbers");
+            if (in.hasNextInt()) {
+                int input = in.nextInt();
+                in.nextLine();
+                for (Integer option : options) {
+                    if (input == option) {
+                        target = input;
+                        break;
+                    }
+                }
+            }else if (in.hasNext()) {
+                in.nextLine();
+            }
 
+        }
+
+        return(target);
     }
 
     /**
@@ -119,13 +161,32 @@ public abstract class RoleControl {
      * @return The target number
      */
     public int validVampTarget() {
-
-        int target = randomizer.nextInt(players.size()) + 1;
-        while (vampires.contains(target)) {
-            target = randomizer.nextInt(players.size()) + 1;
+        int target = 0;
+        Scanner in = new Scanner(System.in);
+        ArrayList<Integer> options = new ArrayList<>();
+        for (int i = 1; i < players.size()+1; i++) {
+            if (!vampires.contains(i)){
+                options.add(i);
+            }
         }
-        return(target);
+        while (target == 0) {
+            System.out.println("Your options are "+options);
+            System.out.println("enter one of the shown numbers");
+            if (in.hasNextInt()&&in.hasNext()) {
+                int input = in.nextInt();
+                in.nextLine();
+                for (Integer option : options) {
+                    if (input == option) {
+                        target = input;
+                        break;
+                    }
+                }
+            }else if (in.hasNext()){
+                in.nextLine();
+            }
+        }
 
+        return(target);
     }
 
     /**
@@ -136,18 +197,39 @@ public abstract class RoleControl {
      * @return The target number
      */
     public int validNonDeathMafTarget() {
-        target = validMafTarget();
+        int target = 0;
+        Scanner in = new Scanner(System.in);
+        ArrayList<Integer> options = new ArrayList<>();
+        for (int i = 1; i < players.size()+1; i++) {
+            if (!(mafia.contains(i))||target == mafTarget){
+                options.add(i);
+            }
+        }
         /*
          * Special case: Role list is only 6 players, with 5 mafia. Attempting to run the while loop
          * at the bottom of the function will cause an infinite loop. Following if prevents this,
          * and forces the role to simply visit the target marked for death instead.
          */
-        if (mafia.size() == 5 && players.size() == 6) {
-            return target;
+        if (options.isEmpty()){
+
+            return mafTarget;
         }
-        while (target == mafTarget) {
-            target = validMafTarget();
+        while (target == 0) {
+            System.out.println("Your options are "+options);
+            System.out.println("enter one of the shown numbers");
+            if (in.hasNextInt()&&in.hasNext()) {
+                int input = in.nextInt();
+                for (Integer option : options) {
+                    if (input == option) {
+                        target = input;
+                        break;
+                    }
+                }
+            }else if (in.hasNext()){
+                in.nextLine();
+            }
         }
+
         return target;
     }
 
@@ -163,7 +245,7 @@ public abstract class RoleControl {
     public boolean checkVetVisit(int num) {
 
         if (num == vetNum && alert) {
-            if (DocSubs.size() == 0) {
+            if (DocSubs.isEmpty()) {
                 attackers.add("Veteran");
                 players.get(vetNum).activity.add("VetShot");
                 return true;
@@ -180,7 +262,6 @@ public abstract class RoleControl {
      * Given a number representing the player number that the current player wishes
      * to visit, this function will return back the number of the player that will
      * actually be visited.
-     *
      * It is assumed that the player variable stores the visitor's player profile.
      *
      * @param num The target that the visitor wants to visit
@@ -253,7 +334,7 @@ public abstract class RoleControl {
      * and then remove that Bodyguard from the subscribers list as he had fulfilled his duty
      */
     public void notifyBG() {
-        if (BGSubs.size() != 0) {
+        if (!BGSubs.isEmpty()) {
             players.get(BGSubs.get(0)).updateBG();
             BGSubs.remove(0);
         }
@@ -271,7 +352,7 @@ public abstract class RoleControl {
      * accordingly
      */
     public void updateBG() {
-        if (this.DocSubs.size() != 0) {
+        if (!this.DocSubs.isEmpty()) {
             notifyDoctors();
             activity.add("DocSave");
         } else {
@@ -313,7 +394,7 @@ public abstract class RoleControl {
         }
         if (players.get(num).roleName.equals("Veteran") && alert) {
             players.get(num).activity.add("VetAtt");
-            if (DocSubs.size() != 0) {
+            if (!DocSubs.isEmpty()) {
                 notifyDoctors();
                 activity.add("DocSave");
             } else {
@@ -321,15 +402,15 @@ public abstract class RoleControl {
             }
             return;
         }
-        if (players.get(num).DocSubs.size() != 0) {
+        if (!players.get(num).DocSubs.isEmpty()) {
             dead = false;
             players.get(num).activity.add("DocSave");
             players.get(num).notifyDoctors();
         }
-        if (players.get(num).BGSubs.size() != 0) {
+        if (!players.get(num).BGSubs.isEmpty()) {
             players.get(num).activity.add("BGSave");
             players.get(num).notifyBG();
-            if (DocSubs.size() != 0) {
+            if (!DocSubs.isEmpty()) {
                 activity.add("DocvsBG");
                 notifyDoctors();
             } else {
