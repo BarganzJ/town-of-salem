@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
-
+import translator.Translator;
 public abstract class RoleControl {
 
     public String roleName; // The player's role name
@@ -97,6 +97,13 @@ public abstract class RoleControl {
         }
         return PlayerChoice(options);
     }
+
+    /**
+     * TODO: make a request method in translator and call that instead
+     * sends the list of all valid options to the request method anf validates the output
+     * @param options a list of all valid options
+     * @return the chosen valid option
+     */
     private static int PlayerChoice(ArrayList<Integer>options){
         Scanner in = new Scanner(System.in);
         int target = 0;
@@ -127,8 +134,6 @@ public abstract class RoleControl {
      * @return The target number
      */
     public int validMafTarget() {
-        int target = 0;
-        Scanner in = new Scanner(System.in);
         ArrayList<Integer> options = new ArrayList<>();
         for (int i = 1; i < players.size()+1; i++) {
             if (!mafia.contains(i)){
@@ -145,8 +150,7 @@ public abstract class RoleControl {
      * @return The target number
      */
     public int validVampTarget() {
-        int target = 0;
-        Scanner in = new Scanner(System.in);
+
         ArrayList<Integer> options = new ArrayList<>();
         for (int i = 1; i < players.size()+1; i++) {
             if (!vampires.contains(i)){
@@ -164,8 +168,6 @@ public abstract class RoleControl {
      * @return The target number
      */
     public int validNonDeathMafTarget() {
-        int target = 0;
-        Scanner in = new Scanner(System.in);
         ArrayList<Integer> options = new ArrayList<>();
         for (int i = 1; i < players.size()+1; i++) {
             if (!(mafia.contains(i))||target == mafTarget){
@@ -173,12 +175,11 @@ public abstract class RoleControl {
             }
         }
         /*
-         * Special case: Role list is only 6 players, with 5 mafia. Attempting to run the while loop
-         * at the bottom of the function will cause an infinite loop. Following if prevents this,
+         * Special case: Role list is only 6 players, with 5 mafia. Attempting to run PlayerChoice
+         * will present 0 options. Following if prevents this,
          * and forces the role to simply visit the target marked for death instead.
          */
         if (options.isEmpty()){
-
             return mafTarget;
         }
         return PlayerChoice(options);
@@ -313,6 +314,7 @@ public abstract class RoleControl {
 
     /**
      * General attack method for killing roles.
+     * TODO: store death state permanently
      */
     public void lethalAttack(int num, String AttackerName) {
 
