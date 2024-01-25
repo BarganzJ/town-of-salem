@@ -7,6 +7,8 @@
  */
 package Player;
 
+import java.util.ArrayList;
+
 public abstract class Player {
     Boolean dead = false;
 
@@ -29,7 +31,17 @@ public abstract class Player {
      * @return the player's response
      */
     public abstract int ReadPrompt(String prompt);
-    public static void kill(){
+    public void kill(){
         boolean dead = true;
+    }
+    /**
+     * generates a pre-written prompt containing the passed in options and sends it to the player
+     * to be used for both roleActions AND voting
+     * @param options the options to be included in the prompt
+     * @param actionType the type of action the request was made for
+     * @return the selection made by the player
+     */
+    public int request(ArrayList<Integer> options, String actionType){
+        return 0;
     }
 }

@@ -95,16 +95,23 @@ public abstract class RoleControl {
                 options.add(i);
             }
         }
-        return PlayerChoice(options);
+        return PlayerChoice(options,"roleAction");
     }
 
     /**
-     * TODO: make a request method in translator and call that instead
+     * counts up the votes of all alive players, then kills the one with the most votes
+     * TODO: call playerChoice method here
+     */
+    public void runVotes(){
+
+    }
+    /**
+     * TODO: make a request method and call that instead
      * sends the list of all valid options to the request method anf validates the output
      * @param options a list of all valid options
      * @return the chosen valid option
      */
-    private static int PlayerChoice(ArrayList<Integer>options){
+    private static int PlayerChoice(ArrayList<Integer>options, String action){
         Scanner in = new Scanner(System.in);
         int target = 0;
         while (target == 0) {
@@ -140,7 +147,7 @@ public abstract class RoleControl {
                 options.add(i);
             }
         }
-        return PlayerChoice(options);
+        return PlayerChoice(options,"roleAction");
     }
 
     /**
@@ -157,7 +164,7 @@ public abstract class RoleControl {
                 options.add(i);
             }
         }
-        return PlayerChoice(options);
+        return PlayerChoice(options,"roleAction");
     }
 
     /**
@@ -182,7 +189,7 @@ public abstract class RoleControl {
         if (options.isEmpty()){
             return mafTarget;
         }
-        return PlayerChoice(options);
+        return PlayerChoice(options,"roleAction");
     }
 
     /**

@@ -11,14 +11,13 @@ import java.util.ArrayList;
 
 public class Translator {
     /**
-     * generates a pre-written prompt containing the passed in options and sends it to the player
-     * to be used for both roleActions AND voting
-     * @param options the options to be included in the prompt
-     * @param actionType the type of action the request was made for
-     * @return the selection made by the player
+     * prompt generation logic
+     * @param role the player's role, or VOTING if the player needs to vote
+     * @param options all valid options
+     * @return the prompt
      */
-    public int request(ArrayList<Integer> options, String actionType){
-        return 0;
+    public String generatePrompt(String role, ArrayList<Integer> options){
+        return null;
     }
 
     /**
