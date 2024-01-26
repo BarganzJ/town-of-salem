@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
-import translator.Translator;
+
 public abstract class RoleControl {
 
     public String roleName; // The player's role name
@@ -95,7 +95,7 @@ public abstract class RoleControl {
                 options.add(i);
             }
         }
-        return PlayerChoice(options,"roleAction");
+        return playerChoice(options,"roleAction");
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class RoleControl {
      * @param options a list of all valid options
      * @return the chosen valid option
      */
-    private static int PlayerChoice(ArrayList<Integer>options, String action){
+    private static int playerChoice(ArrayList<Integer>options, String action){
         Scanner in = new Scanner(System.in);
         int target = 0;
         while (target == 0) {
@@ -147,7 +147,7 @@ public abstract class RoleControl {
                 options.add(i);
             }
         }
-        return PlayerChoice(options,"roleAction");
+        return playerChoice(options,"roleAction");
     }
 
     /**
@@ -164,7 +164,7 @@ public abstract class RoleControl {
                 options.add(i);
             }
         }
-        return PlayerChoice(options,"roleAction");
+        return playerChoice(options,"roleAction");
     }
 
     /**
@@ -189,7 +189,7 @@ public abstract class RoleControl {
         if (options.isEmpty()){
             return mafTarget;
         }
-        return PlayerChoice(options,"roleAction");
+        return playerChoice(options,"roleAction");
     }
 
     /**
