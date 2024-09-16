@@ -24,7 +24,7 @@ public class Controller {
 		MainValidator val = new MainValidator(storage, roles);
 		Generator gen = new Generator(storage, roles, val);
 		val.validate();
-		if (val.getInfractions().size() != 0) {
+		if (!val.getInfractions().isEmpty()) {
 			val.getInfractions().add(0, "Violations:");
 			return val.getInfractions();
 		} else {
